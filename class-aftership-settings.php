@@ -29,7 +29,7 @@ class AfterShip_Settings
 		$this->plugins[] = array(
 			'value' => 'aftership',
 			'label' => 'AfterShip',
-			'path' => 'aftership/aftership.php'
+			'path' => 'aftership-woocommerce-tracking/aftership.php'
 		);
 		$this->plugins[] = array(
 			'value' => 'wc-shipment-tracking',
