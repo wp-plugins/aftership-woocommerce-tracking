@@ -94,7 +94,7 @@ You'll find the FAQ on [AfterShip.com](https://aftership.uservoice.com/knowledge
 
 == Changelog ==
 
-= 1.0.4=
+= 1.0.4 =
 * Delete changelog.txt
 
 = 1.0.3 =
