@@ -12,6 +12,12 @@
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
+/**
+ * Required functions
+ */
+if ( ! class_exists( 'WC_Dependencies' ) )
+	require_once 'woo-includes/class-wc-dependencies.php';
+
 class AfterShip_Settings
 {
 	/**
