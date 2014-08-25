@@ -1,0 +1,30 @@
+.hidden-field {
+	display: none;
+}
+
+#aftership_wrapper {
+	display: none;
+}
+
+#aftership_spinner {
+	background: url('../image/loadingAnimation.gif') no-repeat;
+	opacity: .7;
+	filter: alpha(opacity=70);
+	height: 16px;
+}
+
+#aftership_tracking_provider {
+	width: 100%;
+}
+
+.aftership_error {
+	display: none;
+}
+
+.aftership_input_text {
+	width: 300px;
+}
+
+.aftership_dropdown {
+	width: 300px;
+}
