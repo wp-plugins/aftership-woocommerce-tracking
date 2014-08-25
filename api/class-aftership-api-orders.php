@@ -275,7 +275,7 @@ class AfterShip_API_Orders extends AfterShip_API_Resource
 		$query = $this->query_orders($filter);
 
 		if (!current_user_can('read_private_shop_orders'))
-			return new WP_Error('aftership_api_user_cannot_read_orders_count', __('You do not have permission to read the orders count', 'woocommerce'), array('status' => 401));
+			return new WP_Error('aftership_api_user_cannot_read_orders_count', __('You do not have permission to read the orders count', 'aftership'), array('status' => 401));
 
 		return array('count' => (int)$query->found_posts);
 	}
