@@ -10,6 +10,20 @@
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
+
+if (!function_exists('getallheaders')) {
+	function getallheaders()
+	{
+		$headers = '';
+		foreach ($_SERVER as $name => $value) {
+			if (substr($name, 0, 5) == 'HTTP_') {
+				$headers[substr($name, 5)] = $value;
+			}
+		}
+		return $headers;
+	}
+}
+
 class AfterShip_API_Authentication
 {
 
