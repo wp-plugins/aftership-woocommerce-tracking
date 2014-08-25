@@ -117,7 +117,7 @@ class AfterShip_API_Authentication
 		$users = $user_query->get_results();
 
 		if (empty($users[0]))
-			throw new Exception(__('AfterShip\'s WordPress API Key is invalid', 'woocommerce'), 401);
+			throw new Exception(__('AfterShip\'s WordPress API Key is invalid', 'aftership'), 401);
 
 		return $users[0];
 
