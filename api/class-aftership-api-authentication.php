@@ -17,7 +17,7 @@ if (!function_exists('getallheaders')) {
 		$headers = '';
 		foreach ($_SERVER as $name => $value) {
 			if (substr($name, 0, 5) == 'HTTP_') {
-				$headers[substr($name, 5)] = $value;
+				$headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
 			}
 		}
 		return $headers;
@@ -71,9 +71,14 @@ class AfterShip_API_Authentication
 
 		$headers = getallheaders();
 
+		$key = 'AFTERSHIP_WP_KEY';
+		$key1 = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', $key))));
+
 		// get aftership wp key
-		if (!empty($headers['AFTERSHIP_WP_KEY'])) {
-			$api_key = $headers['AFTERSHIP_WP_KEY'];
+		if (!empty($headers[$key])) {
+			$api_key = $headers[$key];
+		} else if (!empty($headers[$key1])){
+			$api_key = $headers[$key1];
 		} else {
 			throw new Exception(__('AfterShip\'s WordPress Key is missing', 'aftership'), 404);
 		}
