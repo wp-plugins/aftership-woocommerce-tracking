@@ -165,7 +165,7 @@ class AfterShip_API_Server
 
 		// WP_Errors are handled in serve_request()
 		elseif (!is_wp_error($user))
-			$user = new WP_Error('aftership_api_authentication_error', __('Invalid authentication method', 'woocommerce'), array('code' => 500));
+			$user = new WP_Error('aftership_api_authentication_error', __('Invalid authentication method', 'aftership'), array('code' => 500));
 
 		return $user;
 	}
@@ -320,7 +320,7 @@ class AfterShip_API_Server
 							break;
 			*/
 			default:
-				return new WP_Error('aftership_api_unsupported_method', __('Unsupported request method', 'woocommerce'), array('status' => 400));
+				return new WP_Error('aftership_api_unsupported_method', __('Unsupported request method', 'aftership'), array('status' => 400));
 		}
 
 		foreach ($this->get_routes() as $route => $handlers) {
@@ -337,7 +337,7 @@ class AfterShip_API_Server
 					continue;
 
 				if (!is_callable($callback))
-					return new WP_Error('aftership_api_invalid_handler', __('The handler for the route is invalid', 'woocommerce'), array('status' => 500));
+					return new WP_Error('aftership_api_invalid_handler', __('The handler for the route is invalid', 'aftership'), array('status' => 500));
 
 				$args = array_merge($args, $this->params['GET']);
 				if ($method & self::METHOD_POST) {
@@ -372,7 +372,7 @@ class AfterShip_API_Server
 			}
 		}
 
-		return new WP_Error('aftership_api_no_route', __('No route was found matching the URL and request method', 'woocommerce'), array('status' => 404));
+		return new WP_Error('aftership_api_no_route', __('No route was found matching the URL and request method', 'aftership'), array('status' => 404));
 	}
 
 	/**
@@ -406,7 +406,7 @@ class AfterShip_API_Server
 				$ordered_parameters[] = $param->getDefaultValue();
 			} else {
 				// We don't have this parameter and it wasn't optional, abort!
-				return new WP_Error('aftership_api_missing_callback_param', sprintf(__('Missing parameter %s', 'woocommerce'), $param->getName()), array('status' => 400));
+				return new WP_Error('aftership_api_missing_callback_param', sprintf(__('Missing parameter %s', 'aftership'), $param->getName()), array('status' => 400));
 			}
 		}
 		return $ordered_parameters;
@@ -440,7 +440,7 @@ class AfterShip_API_Server
 				'ssl_enabled' => ('yes' === get_option('aftership_force_ssl_checkout')),
 				'permalinks_enabled' => ('' !== get_option('permalink_structure')),
 				'links' => array(
-					'help' => 'http://woothemes.github.io/woocommerce/rest-api/',
+					'help' => 'https://aftership.uservoice.com/knowledgebase',
 				),
 			),
 		));
