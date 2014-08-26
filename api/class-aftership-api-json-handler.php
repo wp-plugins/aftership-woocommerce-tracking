@@ -57,7 +57,7 @@ class AfterShip_API_JSON_Handler implements AfterShip_API_Handler
 
 				WC()->api->server->send_status(400);
 
-				$data = array(array('code' => 'aftership_api_jsonp_disabled', 'message' => __('JSONP support is disabled on this site', 'woocommerce')));
+				$data = array(array('code' => 'aftership_api_jsonp_disabled', 'message' => __('JSONP support is disabled on this site', 'aftership')));
 			}
 
 			// Check for invalid characters (only alphanumeric allowed)
@@ -65,7 +65,7 @@ class AfterShip_API_JSON_Handler implements AfterShip_API_Handler
 
 				WC()->api->server->send_status(400);
 
-				$data = array(array('code' => 'aftership_api_jsonp_callback_invalid', __('The JSONP callback function is invalid', 'woocommerce')));
+				$data = array(array('code' => 'aftership_api_jsonp_callback_invalid', __('The JSONP callback function is invalid', 'aftership')));
 			}
 
 			return $_GET['_jsonp'] . '(' . json_encode($data) . ')';

@@ -71,7 +71,7 @@ class AfterShip_API_Resource
 
 		// validate ID
 		if (empty($id))
-			return new WP_Error("aftership_api_invalid_{$resource_name}_id", sprintf(__('Invalid %s ID', 'woocommerce'), $type), array('status' => 404));
+			return new WP_Error("aftership_api_invalid_{$resource_name}_id", sprintf(__('Invalid %s ID', 'aftership'), $type), array('status' => 404));
 
 		// only custom post types have per-post type/permission checks
 		if ('customer' !== $type) {
@@ -83,24 +83,24 @@ class AfterShip_API_Resource
 
 			// validate post type
 			if ($type !== $post_type)
-				return new WP_Error("aftership_api_invalid_{$resource_name}", sprintf(__('Invalid %s', 'woocommerce'), $resource_name), array('status' => 404));
+				return new WP_Error("aftership_api_invalid_{$resource_name}", sprintf(__('Invalid %s', 'aftership'), $resource_name), array('status' => 404));
 
 			// validate permissions
 			switch ($context) {
 
 				case 'read':
 					if (!$this->is_readable($post))
-						return new WP_Error("aftership_api_user_cannot_read_{$resource_name}", sprintf(__('You do not have permission to read this %s', 'woocommerce'), $resource_name), array('status' => 401));
+						return new WP_Error("aftership_api_user_cannot_read_{$resource_name}", sprintf(__('You do not have permission to read this %s', 'aftership'), $resource_name), array('status' => 401));
 					break;
 
 				case 'edit':
 					if (!$this->is_editable($post))
-						return new WP_Error("aftership_api_user_cannot_edit_{$resource_name}", sprintf(__('You do not have permission to edit this %s', 'woocommerce'), $resource_name), array('status' => 401));
+						return new WP_Error("aftership_api_user_cannot_edit_{$resource_name}", sprintf(__('You do not have permission to edit this %s', 'aftership'), $resource_name), array('status' => 401));
 					break;
 
 				case 'delete':
 					if (!$this->is_deletable($post))
-						return new WP_Error("aftership_api_user_cannot_delete_{$resource_name}", sprintf(__('You do not have permission to delete this %s', 'woocommerce'), $resource_name), array('status' => 401));
+						return new WP_Error("aftership_api_user_cannot_delete_{$resource_name}", sprintf(__('You do not have permission to delete this %s', 'aftership'), $resource_name), array('status' => 401));
 					break;
 			}
 		}
@@ -306,9 +306,9 @@ class AfterShip_API_Resource
 			$result = wp_delete_user($id);
 
 			if ($result)
-				return array('message' => __('Permanently deleted customer', 'woocommerce'));
+				return array('message' => __('Permanently deleted customer', 'aftership'));
 			else
-				return new WP_Error('aftership_api_cannot_delete_customer', __('The customer cannot be deleted', 'woocommerce'), array('status' => 500));
+				return new WP_Error('aftership_api_cannot_delete_customer', __('The customer cannot be deleted', 'aftership'), array('status' => 500));
 
 		} else {
 
@@ -317,16 +317,16 @@ class AfterShip_API_Resource
 			$result = ($force) ? wp_delete_post($id, true) : wp_trash_post($id);
 
 			if (!$result)
-				return new WP_Error("aftership_api_cannot_delete_{$resource_name}", sprintf(__('This %s cannot be deleted', 'woocommerce'), $resource_name), array('status' => 500));
+				return new WP_Error("aftership_api_cannot_delete_{$resource_name}", sprintf(__('This %s cannot be deleted', 'aftership'), $resource_name), array('status' => 500));
 
 			if ($force) {
-				return array('message' => sprintf(__('Permanently deleted %s', 'woocommerce'), $resource_name));
+				return array('message' => sprintf(__('Permanently deleted %s', 'aftership'), $resource_name));
 
 			} else {
 
 				$this->server->send_status('202');
 
-				return array('message' => sprintf(__('Deleted %s', 'woocommerce'), $resource_name));
+				return array('message' => sprintf(__('Deleted %s', 'aftership'), $resource_name));
 			}
 		}
 	}
