@@ -3,7 +3,7 @@
 	Plugin Name: AfterShip - WooCommerce Tracking
 	Plugin URI: http://aftership.com/
 	Description: Add tracking number and carrier name to WooCommerce, display tracking info at order history page, auto import tracking numbers to AfterShip.
-	Version: 1.1.7
+	Version: 1.1.8
 	Author: AfterShip
 	Author URI: http://aftership.com
 
@@ -389,13 +389,13 @@ if (is_woocommerce_active()) {
 			function display_tracking_info($order_id, $for_email = false)
 			{
 				if ($this->plugin == 'aftership') {
-					$this->display_order_aftership($order_id);
+					$this->display_order_aftership($order_id, $for_email);
 				} else if ($this->plugin == 'wc-shipment-tracking') { //$49
-					$this->display_order_wc_shipment_tracking($order_id);
+					$this->display_order_wc_shipment_tracking($order_id, $for_email);
 				}
 			}
 
-			private function display_order_aftership($order_id)
+			private function display_order_aftership($order_id, $for_email)
 			{
 				$tracking_provider = get_post_meta($order_id, '_aftership_tracking_provider', true);
 				$tracking_number = get_post_meta($order_id, '_aftership_tracking_number', true);
@@ -434,15 +434,15 @@ if (is_woocommerce_active()) {
 
 				echo wpautop(sprintf(__('Your order was shipped%s%s. Tracking number is %s.%s%s', 'wc_shipment_tracking'), $date_shipped_str, $provider_name, $tracking_number, $postcode_str, $account_str));
 
-				if ($this->use_track_button) {
+				if (!$for_email && $this->use_track_button) {
 					$this->display_track_button($tracking_provider, $tracking_number);
 				}
 
 			}
 
-			private function display_order_wc_shipment_tracking($order_id)
+			private function display_order_wc_shipment_tracking($order_id, $for_email)
 			{
-				if (!$this->use_track_button) {
+				if ($for_email || !$this->use_track_button) {
 					return;
 				}
 
@@ -475,7 +475,7 @@ if (is_woocommerce_active()) {
 			 * @access public
 			 * @return void
 			 */
-			function email_display($order, $plugin)
+			function email_display($order)
 			{
 				$this->display_tracking_info($order->id, true);
 			}
