@@ -10,28 +10,17 @@
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
-if (!function_exists('apache_request_headers')) {
-	function apache_request_headers()
+
+if (!function_exists('getallheaders')) {
+	function getallheaders()
 	{
-		$arh = array();
-		$rx_http = '/\AHTTP_/';
-		foreach ($_SERVER as $key => $val) {
-			if (preg_match($rx_http, $key)) {
-				$arh_key = preg_replace($rx_http, '', $key);
-				$rx_matches = array();
-				// do some nasty string manipulations to restore the original letter case
-				// this should work in most cases
-				$rx_matches = explode('_', $arh_key);
-				if (count($rx_matches) > 0 and strlen($arh_key) > 2) {
-					foreach ($rx_matches as $ak_key => $ak_val) {
-						$rx_matches[$ak_key] = ucfirst($ak_val);
-					}
-					$arh_key = implode('-', $rx_matches);
-				}
-				$arh[$arh_key] = $val;
+		$headers = '';
+		foreach ($_SERVER as $name => $value) {
+			if (substr($name, 0, 5) == 'HTTP_') {
+				$headers[substr($name, 5)] = $value;
 			}
 		}
-		return ($arh);
+		return $headers;
 	}
 }
 
@@ -80,7 +69,7 @@ class AfterShip_API_Authentication
 	{
 		//$params = getAfterShipInstance()->api->server->params['GET'];
 
-		$headers = apache_request_headers();
+		$headers = getallheaders();
 
 		// get aftership wp key
 		if (!empty($headers['AFTERSHIP_WP_KEY'])) {
@@ -117,7 +106,7 @@ class AfterShip_API_Authentication
 		$users = $user_query->get_results();
 
 		if (empty($users[0]))
-			throw new Exception(__('AfterShip\'s WordPress API Key is invalid', 'woocommerce'), 401);
+			throw new Exception(__('AfterShip\'s WordPress API Key is invalid', 'aftership'), 401);
 
 		return $users[0];
 
