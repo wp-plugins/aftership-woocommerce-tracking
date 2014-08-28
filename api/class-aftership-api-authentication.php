@@ -70,6 +70,7 @@ class AfterShip_API_Authentication
 		//$params = getAfterShipInstance()->api->server->params['GET'];
 
 		$headers = getallheaders();
+		$headers = json_decode(json_encode($headers), true);
 
 		// it dues to different kind of server configuration
 		$key = 'AFTERSHIP_WP_KEY';
