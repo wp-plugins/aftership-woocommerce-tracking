@@ -3,7 +3,7 @@
 	Plugin Name: AfterShip - WooCommerce Tracking
 	Plugin URI: http://aftership.com/
 	Description: Add tracking number and carrier name to WooCommerce, display tracking info at order history page, auto import tracking numbers to AfterShip.
-	Version: 1.2.2
+	Version: 1.2.3
 	Author: AfterShip
 	Author URI: http://aftership.com
 
@@ -58,21 +58,28 @@ if (is_woocommerce_active()) {
 
 				$options = get_option('aftership_option_name');
 				if ($options) {
-					$plugin = $options['plugin'];
-					if ($plugin == 'aftership') {
-						add_action('admin_print_scripts', array(&$this, 'library_scripts'));
-						add_action('admin_print_styles', array(&$this, 'admin_styles'));
-						add_action('add_meta_boxes', array(&$this, 'add_meta_box'));
-						add_action('woocommerce_process_shop_order_meta', array(&$this, 'save_meta_box'), 0, 2);
-						add_action('plugins_loaded', array($this, 'load_plugin_textdomain'));
 
-						add_action('admin_footer', array(&$this, 'aftership_get_couriers'));
-						add_action('wp_ajax_aftership_get_couriers_callback', array(&$this, 'aftership_get_couriers_callback'));
+					if (isset($options['plugin'])) {
+						$plugin = $options['plugin'];
+						if ($plugin == 'aftership') {
+							add_action('admin_print_scripts', array(&$this, 'library_scripts'));
+							add_action('admin_print_styles', array(&$this, 'admin_styles'));
+							add_action('add_meta_boxes', array(&$this, 'add_meta_box'));
+							add_action('woocommerce_process_shop_order_meta', array(&$this, 'save_meta_box'), 0, 2);
+							add_action('plugins_loaded', array($this, 'load_plugin_textdomain'));
+
+							add_action('admin_footer', array(&$this, 'aftership_get_couriers'));
+							add_action('wp_ajax_aftership_get_couriers_callback', array(&$this, 'aftership_get_couriers_callback'));
+						}
+
+						// View Order Page
+						$this->plugin = $plugin;
 					}
 
-					// View Order Page
-					$this->plugin = $plugin;
-					$this->use_track_button = $options['use_track_button'];
+					if (isset($options['use_track_button'])) {
+						$this->use_track_button = $options['use_track_button'];
+					}
+
 					add_action('woocommerce_view_order', array(&$this, 'display_tracking_info'));
 					add_action('woocommerce_email_before_order_table', array(&$this, 'email_display'));
 				}
@@ -227,6 +234,7 @@ if (is_woocommerce_active()) {
 
 				woocommerce_wp_text_input(array(
 					'id' => 'aftership_tracking_provider_name',
+					'label' => __('', 'wc_aftership'),
 					'placeholder' => '',
 					'description' => '',
 					'class' => 'hidden',
@@ -235,6 +243,7 @@ if (is_woocommerce_active()) {
 
 				woocommerce_wp_text_input(array(
 					'id' => 'aftership_tracking_required_fields',
+					'label' => __('', 'wc_aftership'),
 					'placeholder' => '',
 					'description' => '',
 					'class' => 'hidden',
@@ -413,6 +422,10 @@ if (is_woocommerce_active()) {
 
 				$provider_name = $tracking_provider_name;
 				$provider_required_fields = explode(",", $tracking_required_fields);
+
+				$date_shipped_str = '';
+				$postcode_str = '';
+				$account_str = '';
 
 				foreach ($provider_required_fields as $field) {
 					if ($field == 'tracking_ship_date') {
