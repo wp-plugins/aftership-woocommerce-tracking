@@ -4,7 +4,7 @@ Donate link: https://www.aftership.com/
 Tags: shipping, tracking, ups, usps, fedex, dhl, tnt, dpd, post, shipment, woocommerce, tracking number, aftership, package tracking, fulfilment, tracking link, carrier, courier, woo commerce, woocommerce shipment tracking, shipping details plugin, widget, shipstation, track, package
 Requires at least: 2.9
 Tested up to: 4.0
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,7 @@ Correos de Mexico • Estafeta • Mexico Senda Express • Mexico Redpack • M
 7. Input `Store URL` and `AfterShip's WordPress API Key` at [AfterShip WooCommerce page](https://www.aftership.com/apps/woocommerce)
 
 *** This plugin requires at least PHP 5.3.2
+*** This plugin requires at least WooCommerce 2.1
 
 ###Further Reading
 
@@ -94,6 +95,10 @@ You'll find the FAQ on [AfterShip.com](https://aftership.uservoice.com/knowledge
 7. Automatically send out delivery notifications
 
 == Changelog ==
+
+= 1.2.4 =
+* Fix enable track button issues
+* Support at least WooCommerce 2.1
 
 = 1.2.3 =
 * Fix undefined variables issue

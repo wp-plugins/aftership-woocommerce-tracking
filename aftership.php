@@ -3,7 +3,7 @@
 	Plugin Name: AfterShip - WooCommerce Tracking
 	Plugin URI: http://aftership.com/
 	Description: Add tracking number and carrier name to WooCommerce, display tracking info at order history page, auto import tracking numbers to AfterShip.
-	Version: 1.2.3
+	Version: 1.2.4
 	Author: AfterShip
 	Author URI: http://aftership.com
 
@@ -74,10 +74,14 @@ if (is_woocommerce_active()) {
 
 						// View Order Page
 						$this->plugin = $plugin;
+					}else{
+						$this->plugin = '';
 					}
 
 					if (isset($options['use_track_button'])) {
 						$this->use_track_button = $options['use_track_button'];
+					}else{
+						$this->use_track_button = false;
 					}
 
 					add_action('woocommerce_view_order', array(&$this, 'display_tracking_info'));
