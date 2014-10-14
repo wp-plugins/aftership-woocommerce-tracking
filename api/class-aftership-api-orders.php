@@ -378,12 +378,44 @@ class AfterShip_API_Orders extends AfterShip_API_Resource
 	private function query_orders($args)
 	{
 
-		// set base query arguments
-		$query_args = array(
-			'fields' => 'ids',
-			'post_type' => 'shop_order',
-			'post_status' => 'publish',
-		);
+		function wpbo_get_woo_version_number()
+		{
+			// If get_plugins() isn't available, require it
+			if (!function_exists('get_plugins'))
+				require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+
+			// Create the plugins folder and file variables
+			$plugin_folder = get_plugins('/' . 'woocommerce');
+			$plugin_file = 'woocommerce.php';
+
+			// If the plugin version number is set, return it
+			if (isset($plugin_folder[$plugin_file]['Version'])) {
+				return $plugin_folder[$plugin_file]['Version'];
+
+			} else {
+				// Otherwise return null
+				return NULL;
+			}
+		}
+
+		$woo_version = wpbo_get_woo_version_number();
+
+		if ($woo_version >= 2.2) {
+			// set base query arguments
+			$query_args = array(
+				'fields' => 'ids',
+				'post_type' => 'shop_order',
+				//			'post_status' => 'publish',
+				'post_status' => array_keys(wc_get_order_statuses())
+			);
+		} else {
+			// set base query arguments
+			$query_args = array(
+				'fields' => 'ids',
+				'post_type' => 'shop_order',
+				'post_status' => 'publish',
+			);
+		}
 
 		// add status argument
 		if (!empty($args['status'])) {

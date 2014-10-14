@@ -46,12 +46,23 @@ class AfterShip_Settings
 		add_action('admin_menu', array($this, 'add_plugin_page'));
 		add_action('admin_init', array($this, 'page_init'));
 		add_action('admin_print_styles', array($this, 'admin_styles'));
+		add_action('admin_print_scripts', array(&$this, 'library_scripts'));
 	}
 
 
 	public function admin_styles()
 	{
+		wp_enqueue_style('aftership_styles_chosen', plugins_url(basename(dirname(__FILE__))) . '/assets/plugin/chosen/chosen.min.css');
 		wp_enqueue_style('aftership_styles', plugins_url(basename(dirname(__FILE__))) . '/assets/css/admin.css');
+	}
+
+	public function library_scripts()
+	{
+		wp_enqueue_script('aftership_styles_chosen_jquery', plugins_url(basename(dirname(__FILE__))) . '/assets/plugin/chosen/chosen.jquery.min.js');
+		wp_enqueue_script('aftership_styles_chosen_proto', plugins_url(basename(dirname(__FILE__))) . '/assets/plugin/chosen/chosen.proto.min.js');
+		wp_enqueue_script('aftership_script_util', plugins_url(basename(dirname(__FILE__))) . '/assets/js/util.js');
+		wp_enqueue_script('aftership_script_couriers', plugins_url(basename(dirname(__FILE__))) . '/assets/js/couriers.js');
+		wp_enqueue_script('aftership_script_setting', plugins_url(basename(dirname(__FILE__))) . '/assets/js/setting.js');
 	}
 
 	/**
@@ -112,14 +123,6 @@ class AfterShip_Settings
 		);
 
 		add_settings_field(
-			'api_key',
-			'AfterShip API Key',
-			array($this, 'api_key_callback'),
-			'aftership-setting-admin',
-			'aftership_setting_section_id'
-		);
-
-		add_settings_field(
 			'plugin',
 			'Plugin',
 			array($this, 'plugin_callback'),
@@ -128,8 +131,16 @@ class AfterShip_Settings
 		);
 
 		add_settings_field(
+			'couriers',
+			'Couriers',
+			array($this, 'couriers_callback'),
+			'aftership-setting-admin',
+			'aftership_setting_section_id'
+		);
+
+		add_settings_field(
 			'use_track_button',
-			'Use Track Button',
+			'Display Track Button at Order History Page',
 			array($this, 'track_button_callback'),
 			'aftership-setting-admin',
 			'aftership_setting_section_id'
@@ -145,8 +156,8 @@ class AfterShip_Settings
 	{
 		$new_input = array();
 
-		if (isset($input['api_key'])) {
-			$new_input['api_key'] = sanitize_text_field($input['api_key']);
+		if (isset($input['couriers'])) {
+			$new_input['couriers'] = sanitize_text_field($input['couriers']);
 		}
 
 		if (isset($input['plugin'])) {
@@ -156,7 +167,6 @@ class AfterShip_Settings
 		if (isset($input['use_track_button'])) {
 			$new_input['use_track_button'] = true;
 		}
-
 
 		return $new_input;
 	}
@@ -169,18 +179,19 @@ class AfterShip_Settings
 		//print 'Enter your settings below:';
 	}
 
-	/**
-	 * Get the settings option array and print one of its values
-	 */
-	public function api_key_callback()
-	{
-		printf(
-			'<input type="text" id="api_key" name="aftership_option_name[api_key]" value="%s" class="aftership_input_text" required/>',
-			isset($this->options['api_key']) ? esc_attr($this->options['api_key']) : ''
-		);
-		printf(
-			'<p>&nbsp;<a href="http://aftership.uservoice.com/knowledgebase/articles/401963" target="_blank">How to generate AfterShip API Key?</a></p>'
-		);
+	public function couriers_callback(){
+
+		$couriers = array();
+		if (isset($this->options['couriers'])){
+			$couriers = explode(',', $this->options['couriers']);
+		}
+
+//		print_r($couriers);
+		echo '<select data-placeholder="Please select couriers" id="couriers_select" class="chosen-select " multiple style="width:100%">';
+		echo '</select>';
+//		echo '<br><a href="https://www.aftership.com/settings/courier" target="_blank">Update carrier list</a>';
+		echo '<input type="hidden" id="couriers" name="aftership_option_name[couriers]" value="' . implode(",", $couriers) . '"/>';
+
 	}
 
 	public function plugin_callback()
