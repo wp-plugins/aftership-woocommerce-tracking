@@ -3,7 +3,7 @@
 	Plugin Name: AfterShip - WooCommerce Tracking
 	Plugin URI: http://aftership.com/
 	Description: Add tracking number and carrier name to WooCommerce, display tracking info at order history page, auto import tracking numbers to AfterShip.
-	Version: 1.2.0
+	Version: 1.2.5
 	Author: AfterShip
 	Author URI: http://aftership.com
 
@@ -58,23 +58,34 @@ if (is_woocommerce_active()) {
 
 				$options = get_option('aftership_option_name');
 				if ($options) {
-					$plugin = $options['plugin'];
-					if ($plugin == 'aftership') {
-						add_action('admin_print_scripts', array(&$this, 'library_scripts'));
-						add_action('admin_print_styles', array(&$this, 'admin_styles'));
-						add_action('add_meta_boxes', array(&$this, 'add_meta_box'));
-						add_action('woocommerce_process_shop_order_meta', array(&$this, 'save_meta_box'), 0, 2);
-						add_action('plugins_loaded', array($this, 'load_plugin_textdomain'));
 
-						add_action('admin_footer', array(&$this, 'aftership_get_couriers'));
-						add_action('wp_ajax_aftership_get_couriers_callback', array(&$this, 'aftership_get_couriers_callback'));
+					if (isset($options['plugin'])) {
+						$plugin = $options['plugin'];
+						if ($plugin == 'aftership') {
+							add_action('admin_print_scripts', array(&$this, 'library_scripts'));
+							add_action('admin_print_styles', array(&$this, 'admin_styles'));
+							add_action('add_meta_boxes', array(&$this, 'add_meta_box'));
+							add_action('woocommerce_process_shop_order_meta', array(&$this, 'save_meta_box'), 0, 2);
+							add_action('plugins_loaded', array($this, 'load_plugin_textdomain'));
+
+							$this->couriers = $options['couriers'];
+						}
+
+						// View Order Page
+						$this->plugin = $plugin;
+					}else{
+						$this->plugin = '';
 					}
 
-					// View Order Page
-					$this->plugin = $plugin;
-					$this->use_track_button = $options['use_track_button'];
+					if (isset($options['use_track_button'])) {
+						$this->use_track_button = $options['use_track_button'];
+					}else{
+						$this->use_track_button = false;
+					}
+
 					add_action('woocommerce_view_order', array(&$this, 'display_tracking_info'));
 					add_action('woocommerce_email_before_order_table', array(&$this, 'email_display'));
+
 				}
 
 				// user profile api key
@@ -105,7 +116,6 @@ if (is_woocommerce_active()) {
 			{
 				include_once('class-aftership-api.php');
 				include_once('class-aftership-settings.php');
-				include_once('vendor/autoload.php');
 			}
 
 			/**
@@ -118,70 +128,17 @@ if (is_woocommerce_active()) {
 
 			public function admin_styles()
 			{
+				wp_enqueue_style('aftership_styles_chosen', plugins_url(basename(dirname(__FILE__))) . '/assets/plugin/chosen/chosen.min.css');
 				wp_enqueue_style('aftership_styles', plugins_url(basename(dirname(__FILE__))) . '/assets/css/admin.css');
 			}
 
 			public function library_scripts()
 			{
-				wp_enqueue_script('aftership_script', plugins_url(basename(dirname(__FILE__))) . '/assets/js/admin.js');
-			}
-
-			public function aftership_get_couriers()
-			{
-				//todo: not only check shop_order, have to check action=edit too
-				if (get_post_type(get_the_ID()) == 'shop_order') {
-					$js = '
-					jQuery(document).ready(function($) {
-						var data = {
-							"action": "aftership_get_couriers_callback"
-						};
-						// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
-						$.post(ajaxurl, data, function(response) {
-							//alert("Got this from the server: " + response);
-							fill_meta_box(response);
-						});
-					});
-				';
-
-					if (function_exists('wc_enqueue_js')) {
-						wc_enqueue_js($js);
-					} else {
-						global $woocommerce;
-						$woocommerce->add_inline_js($js);
-					}
-				}
-
-			}
-
-			public function aftership_get_couriers_callback()
-			{
-				$options = get_option('aftership_option_name');
-				$api_key = $options['api_key'];
-
-				$code = 200;
-				$message = '';
-				$response = '';
-				if (!$api_key) {
-					$code = 800; // no api key
-					$message = 'No Api Key';
-				} else {
-					$courier = new AfterShip\Couriers($api_key);
-					$response = $courier->get();
-					if ($response['meta']['code'] == 401) {
-						$code = 401;
-						$message = 'Invalid API';
-					} else if ($response['meta']['code'] != 200) {
-						$code = $response['meta']['code'];
-						$message = $response['meta']['message'];
-					}
-				}
-
-				$result = array(
-					'code' => $code,
-					'message' => $message,
-					'response' => $response);
-				echo json_encode($result);
-				die;
+				wp_enqueue_script('aftership_styles_chosen_jquery', plugins_url(basename(dirname(__FILE__))) . '/assets/plugin/chosen/chosen.jquery.min.js');
+				wp_enqueue_script('aftership_styles_chosen_proto', plugins_url(basename(dirname(__FILE__))) . '/assets/plugin/chosen/chosen.proto.min.js');
+				wp_enqueue_script('aftership_script_util', plugins_url(basename(dirname(__FILE__))) . '/assets/js/util.js');
+				wp_enqueue_script('aftership_script_couriers', plugins_url(basename(dirname(__FILE__))) . '/assets/js/couriers.js');
+				wp_enqueue_script('aftership_script_admin', plugins_url(basename(dirname(__FILE__))) . '/assets/js/admin.js');
 			}
 
 			/**
@@ -207,11 +164,6 @@ if (is_woocommerce_active()) {
 
 				$selected_provider = get_post_meta($post->ID, '_aftership_tracking_provider', true);
 
-
-				echo '<div id="aftership_spinner"></div>';
-				echo '<div id="aftership_error_insert_api" class="aftership_error"><a href="options-general.php?page=aftership-setting-admin">Please insert your AfterShip API Key</a></div>';
-				echo '<div id="aftership_error_update_api" class="aftership_error"><a href="options-general.php?page=aftership-setting-admin">Error - Update AfterShip API Key</a></div>';
-				echo '<div id="aftership_error" class="aftership_error"></div>';
 				echo '<div id="aftership_wrapper">';
 
 				echo '<p class="form-field"><label for="aftership_tracking_provider">' . __('Carrier:', 'wc_aftership') . '</label><br/><select id="aftership_tracking_provider" name="aftership_tracking_provider" class="chosen_select" style="width:100%">';
@@ -222,11 +174,15 @@ if (is_woocommerce_active()) {
 				}
 				echo '<option disabled ' . $selected_text . ' value="">Please Select</option>';
 				echo '</select>';
-				echo '<br><a href="https://www.aftership.com/settings/courier" target="_blank">Update carrier list</a>';
+				echo '<br><a href="options-general.php?page=aftership-setting-admin">Update carrier list</a>';
 				echo '<input type="hidden" id="aftership_tracking_provider_hidden" value="' . $selected_provider . '"/>';
+				echo '<input type="hidden" id="aftership_couriers_selected" value="' . $this->couriers . '"/>';
+
+
 
 				woocommerce_wp_text_input(array(
 					'id' => 'aftership_tracking_provider_name',
+					'label' => __('', 'wc_aftership'),
 					'placeholder' => '',
 					'description' => '',
 					'class' => 'hidden',
@@ -235,6 +191,7 @@ if (is_woocommerce_active()) {
 
 				woocommerce_wp_text_input(array(
 					'id' => 'aftership_tracking_required_fields',
+					'label' => __('', 'wc_aftership'),
 					'placeholder' => '',
 					'description' => '',
 					'class' => 'hidden',
@@ -413,6 +370,10 @@ if (is_woocommerce_active()) {
 
 				$provider_name = $tracking_provider_name;
 				$provider_required_fields = explode(",", $tracking_required_fields);
+
+				$date_shipped_str = '';
+				$postcode_str = '';
+				$account_str = '';
 
 				foreach ($provider_required_fields as $field) {
 					if ($field == 'tracking_ship_date') {

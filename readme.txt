@@ -3,8 +3,8 @@ Contributors: aftership
 Donate link: https://www.aftership.com/
 Tags: shipping, tracking, ups, usps, fedex, dhl, tnt, dpd, post, shipment, woocommerce, tracking number, aftership, package tracking, fulfilment, tracking link, carrier, courier, woo commerce, woocommerce shipment tracking, shipping details plugin, widget, shipstation, track, package
 Requires at least: 2.9
-Tested up to: 3.9.2
-Stable tag: 1.2.0
+Tested up to: 4.0
+Stable tag: 1.2.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,11 +60,13 @@ Correos de Mexico • Estafeta • Mexico Senda Express • Mexico Redpack • M
 
 1. [Sign up AfterShip account for FREE](https://www.aftership.com/signup)
 2. [Download AfterShip plugin](http://downloads.wordpress.org/plugin/aftership-woocommerce-tracking.zip), then install and activate at wordpress.
-3. Enter [AfterShip API Key](https://www.aftership.com/apps/api) at plugin settings
-4. Select AfterShip Plugin or [WooCommerce Shipment Tracking Plugin](http://www.woothemes.com/products/shipment-tracking/) for entering tracking number
-5. Check `Use Track Button` for displaying tracking info at order history page
-6. Generate [AfterShip's WordPress API Key](http://aftership.uservoice.com/knowledgebase/articles/405909) under `Users` > `Your Profile`
-7. Input `Store URL` and `AfterShip's WordPress API Key` at [AfterShip WooCommerce page](https://www.aftership.com/apps/woocommerce)
+3. Select AfterShip Plugin or [WooCommerce Shipment Tracking Plugin](http://www.woothemes.com/products/shipment-tracking/) for entering tracking number
+4. Check `Use Track Button` for displaying tracking info at order history page
+5. Generate [AfterShip's WordPress API Key](http://aftership.uservoice.com/knowledgebase/articles/405909) under `Users` > `Your Profile`
+6. Input `Store URL` and `AfterShip's WordPress API Key` at [AfterShip WooCommerce page](https://www.aftership.com/apps/woocommerce)
+
+*** This plugin requires at least PHP 5.2.4
+*** This plugin requires at least WooCommerce 2.1
 
 ###Further Reading
 
@@ -92,6 +94,27 @@ You'll find the FAQ on [AfterShip.com](https://aftership.uservoice.com/knowledge
 7. Automatically send out delivery notifications
 
 == Changelog ==
+
+= 1.2.5 =
+* No longer require to input AfterShip API key at Wordpress
+* Allow carrier selection at Wordpress
+* Support PHP 5.2.4 or greater
+
+
+= 1.2.4 =
+* Fix enable track button issues
+* Support at least WooCommerce 2.1
+
+= 1.2.3 =
+* Fix undefined variables issue
+* Add Icon
+* Support Wordpress 4.0
+
+= 1.2.2 =
+* Fix the header issues of different server
+
+= 1.2.1 =
+* Fix the header issues of different server
 
 = 1.2.0 =
 * Fix the header issues of different server

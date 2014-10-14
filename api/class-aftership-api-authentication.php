@@ -70,15 +70,20 @@ class AfterShip_API_Authentication
 		//$params = getAfterShipInstance()->api->server->params['GET'];
 
 		$headers = getallheaders();
+		$headers = json_decode(json_encode($headers), true);
 
+		// it dues to different kind of server configuration
 		$key = 'AFTERSHIP_WP_KEY';
 		$key1 = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', $key))));
+		$key2 = 'AFTERSHIP-WP-KEY';
 
 		// get aftership wp key
 		if (!empty($headers[$key])) {
 			$api_key = $headers[$key];
 		} else if (!empty($headers[$key1])){
 			$api_key = $headers[$key1];
+		} else if (!empty($headers[$key2])){
+			$api_key = $headers[$key2];
 		} else {
 			throw new Exception(__('AfterShip\'s WordPress Key is missing', 'aftership'), 404);
 		}
