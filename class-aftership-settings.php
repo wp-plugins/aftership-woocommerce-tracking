@@ -181,7 +181,7 @@ class AfterShip_Settings
 
 	public function couriers_callback(){
 
-		$couriers = [];
+		$couriers = array();
 		if (isset($this->options['couriers'])){
 			$couriers = explode(',', $this->options['couriers']);
 		}
