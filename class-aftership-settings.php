@@ -15,8 +15,8 @@ if (!defined('ABSPATH')) exit; // Exit if accessed directly
 /**
  * Required functions
  */
-if ( ! class_exists( 'WC_Dependencies' ) )
-	require_once 'woo-includes/class-wc-dependencies.php';
+if ( ! class_exists( 'AfterShip_Dependencies' ) )
+	require_once 'class-aftership-dependencies.php';
 
 class AfterShip_Settings
 {
@@ -200,7 +200,7 @@ class AfterShip_Settings
 		$options = "";
 		foreach ($this->plugins as $plugin) {
 			//print_r($plugin);
-			if (WC_Dependencies::plugin_active_check($plugin['path'])) {
+			if (AfterShip_Dependencies::plugin_active_check($plugin['path'])) {
 				$option = '<option value="' . $plugin['value'] . '"';
 
 				if (isset($this->options['plugin']) && esc_attr($this->options['plugin']) == $plugin['value']) {
