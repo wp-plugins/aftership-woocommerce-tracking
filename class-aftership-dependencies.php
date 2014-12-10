@@ -1,10 +1,5 @@
 <?php
-/**
- * WC Dependency Checker
- *
- * Checks if WooCommerce is enabled
- */
-class WC_Dependencies {
+class AfterShip_Dependencies {
 
 	private static $active_plugins;
 
