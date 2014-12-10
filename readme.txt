@@ -4,7 +4,7 @@ Donate link: https://www.aftership.com/
 Tags: shipping, tracking, ups, usps, fedex, dhl, tnt, dpd, post, shipment, woocommerce, tracking number, aftership, package tracking, fulfilment, tracking link, carrier, courier, woo commerce, woocommerce shipment tracking, shipping details plugin, widget, shipstation, track, package
 Requires at least: 2.9
 Tested up to: 4.0
-Stable tag: 1.2.9
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,6 +94,9 @@ You'll find the FAQ on [AfterShip.com](https://aftership.uservoice.com/knowledge
 7. Automatically send out delivery notifications
 
 == Changelog ==
+
+= 1.3.0 =
+* Fix the redeclare class issues
 
 = 1.2.9 =
 * Update the courier list
