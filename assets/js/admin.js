@@ -84,7 +84,7 @@ jQuery(function() {
 		jQuery('#aftership_tracking_provider_chosen').css({width: '100%'});
 
 		providers = {};
-		jQuery.each(couriers, function(index,courier){
+		jQuery.each(couriers, function(index, courier) {
 			providers[courier.slug] = courier;
 		});
 		set_aftership_tracking_provider();
@@ -95,5 +95,13 @@ jQuery(function() {
 		var couriers_selected = jQuery('#aftership_couriers_selected').val();
 		var couriers_selected_arr = (couriers_selected) ? couriers_selected.split(',') : [];
 		fill_meta_box(couriers_selected_arr);
+	}
+
+	if (jQuery('#aftership_tracking_provider_name')) {
+		jQuery('#aftership_tracking_provider_name').parent().hide();
+	}
+
+	if (jQuery('#aftership_tracking_required_fields')) {
+		jQuery('#aftership_tracking_required_fields').parent().hide();
 	}
 });

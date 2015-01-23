@@ -378,7 +378,7 @@ class AfterShip_API_Orders extends AfterShip_API_Resource
 	private function query_orders($args)
 	{
 
-		function wpbo_get_woo_version_number()
+		function aftership_wpbo_get_woo_version_number()
 		{
 			// If get_plugins() isn't available, require it
 			if (!function_exists('get_plugins'))
@@ -398,7 +398,7 @@ class AfterShip_API_Orders extends AfterShip_API_Resource
 			}
 		}
 
-		$woo_version = wpbo_get_woo_version_number();
+		$woo_version = aftership_wpbo_get_woo_version_number();
 
 		if ($woo_version >= 2.2) {
 			// set base query arguments
