@@ -145,6 +145,14 @@ class AfterShip_Settings
 			'aftership-setting-admin',
 			'aftership_setting_section_id'
 		);
+
+        add_settings_field(
+            'track_message',
+            'Content',
+            array($this, 'track_message_callback'),
+            'aftership-setting-admin',
+            'aftership_setting_section_id'
+        );
 	}
 
 	/**
@@ -164,7 +172,15 @@ class AfterShip_Settings
 			$new_input['plugin'] = sanitize_text_field($input['plugin']);
 		}
 
-		if (isset($input['use_track_button'])) {
+        if (isset($input['track_message_1'])) {
+            $new_input['track_message_1'] =  sanitize_text_field($input['track_message_1']);
+        }
+
+        if (isset($input['track_message_2'])) {
+            $new_input['track_message_2'] =  sanitize_text_field($input['track_message_2']);
+        }
+
+        if (isset($input['use_track_button'])) {
 			$new_input['use_track_button'] = true;
 		}
 
@@ -216,6 +232,24 @@ class AfterShip_Settings
 			'<select id="plugin" name="aftership_option_name[plugin]" class="aftership_dropdown">' . $options . '</select>'
 		);
 	}
+
+    public function track_message_callback(){
+        printf(
+            '<input type="text" id="track_message_1" name="aftership_option_name[track_message_1]" value="%s" style="width:100%%">',
+            isset($this->options['track_message_1']) ? $this->options['track_message_1'] : 'Your order was shipped via '
+        );
+        printf('<br/>');
+        printf(
+            '<input type="text" id="track_message_2" name="aftership_option_name[track_message_2]" value="%s" style="width:100%%">',
+            isset($this->options['track_message_2']) ? $this->options['track_message_2'] : 'Tracking number is '
+        );
+        printf('<br/>');
+        printf('<br/>');
+        printf('<b>Demo:</b>');
+        printf(
+            '<div id="track_message_demo_1" style="width:100%%"></div>'
+        );
+    }
 
 	public function track_button_callback()
 	{
