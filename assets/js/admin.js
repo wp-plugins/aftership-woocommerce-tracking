@@ -10,17 +10,17 @@ jQuery(function () {
 
     var providers;
 
+    function hide_input_and_label(id) {
+        jQuery('#' + id).hide();
+        jQuery('label[for=' + id + ']').hide();
+    }
+
+    function show_input_and_label(id) {
+        jQuery('#' + id).show();
+        jQuery('label[for=' + id + ']').show();
+    }
 
     function set_aftership_tracking_provider() {
-        function hide_input_and_label(id) {
-            jQuery('#' + id).hide();
-            jQuery('label[for=' + id + ']').hide();
-        }
-
-        function show_input_and_label(id) {
-            jQuery('#' + id).show();
-            jQuery('label[for=' + id + ']').show();
-        }
 
         jQuery('#aftership_tracking_provider').change(function () {
             jQuery.each(fields_id, function (index, item) {
@@ -59,7 +59,7 @@ jQuery(function () {
 
         var selected_provider = jQuery('#aftership_tracking_provider_hidden').val();
         var find_selected_provider = couriers_selected.indexOf(selected_provider) != -1;
-        if (!find_selected_provider) {
+        if (!find_selected_provider && selected_provider) {
             couriers.push({
                 slug: selected_provider,
                 name: jQuery("#aftership_tracking_provider_name").val(),
@@ -94,17 +94,22 @@ jQuery(function () {
         jQuery('#aftership_tracking_provider').trigger('change');
     }
 
-    if (jQuery('#aftership_tracking_provider')) {
+    if (jQuery('#aftership_tracking_provider').length > 0) {
+
+        jQuery.each(fields_id, function (index, item) {
+            hide_input_and_label(item);
+        });
+
         var couriers_selected = jQuery('#aftership_couriers_selected').val();
         var couriers_selected_arr = (couriers_selected) ? couriers_selected.split(',') : [];
         fill_meta_box(couriers_selected_arr);
     }
 
-    if (jQuery('#aftership_tracking_provider_name')) {
+    if (jQuery('#aftership_tracking_provider_name').length > 0) {
         jQuery('#aftership_tracking_provider_name').parent().hide();
     }
 
-    if (jQuery('#aftership_tracking_required_fields')) {
+    if (jQuery('#aftership_tracking_required_fields').length > 0) {
         jQuery('#aftership_tracking_required_fields').parent().hide();
     }
 });
