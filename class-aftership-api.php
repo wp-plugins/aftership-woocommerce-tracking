@@ -144,7 +144,6 @@ class AfterShip_API
 	private function includes()
 	{
 
-
 		// API server / response handlers
 		include_once('api/class-aftership-api-server.php');
 		include_once('api/interface-aftership-api-handler.php');

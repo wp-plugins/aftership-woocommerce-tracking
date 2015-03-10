@@ -675,6 +675,14 @@ function get_couriers() {
             "required_fields": []
         },
         {
+            "slug": "exapaq",
+            "name": "Exapaq",
+            "phone": "+33 (0)1 55 35 02 80 ",
+            "other_name": "DPD France",
+            "web_url": "http://www.exapaq.com/accueil.php",
+            "required_fields": []
+        },
+        {
             "slug": "fastway-au",
             "name": "Fastway Australia",
             "phone": "+61 (0) 2 9737 8288",
@@ -728,14 +736,6 @@ function get_couriers() {
             "phone": "+62 021 - 73880707",
             "other_name": "PT Synergy First Logistics",
             "web_url": "http://www.jne.co.id/",
-            "required_fields": []
-        },
-        {
-            "slug": "flash-courier",
-            "name": "Flash Courier",
-            "phone": "+55 011 5033 3260",
-            "other_name": "Flash Courier Brazil",
-            "web_url": "http://www.jall.com.br/",
             "required_fields": []
         },
         {
@@ -1121,6 +1121,14 @@ function get_couriers() {
             "required_fields": []
         },
         {
+            "slug": "packlink",
+            "name": "Packlink",
+            "phone": "",
+            "other_name": "Packlink Spain",
+            "web_url": "http://www.packlink.es/",
+            "required_fields": []
+        },
+        {
             "slug": "panther",
             "name": "Panther",
             "phone": "+60 07-6625692",
@@ -1195,6 +1203,14 @@ function get_couriers() {
             "required_fields": []
         },
         {
+            "slug": "postaplus",
+            "name": "Posta Plus",
+            "phone": "+965 1881881",
+            "other_name": "PostaPlus",
+            "web_url": "http://www.postaplus.com",
+            "required_fields": []
+        },
+        {
             "slug": "poste-italiane",
             "name": "Poste Italiane",
             "phone": "+39 803 160",
@@ -1242,7 +1258,10 @@ function get_couriers() {
             "phone": "+31 (0)900 0990",
             "other_name": "TNT Post parcel service United Kingdom",
             "web_url": "http://www.postnl.nl/voorthuis/",
-            "required_fields": []
+            "required_fields": [
+                "tracking_destination_country",
+                "tracking_postal_code"
+            ]
         },
         {
             "slug": "postnl-international",
@@ -1413,6 +1432,17 @@ function get_couriers() {
             "required_fields": []
         },
         {
+            "slug": "sic-teliway",
+            "name": "Teliway SIC Express",
+            "phone": "+33 (0) 1 39 37 40 08",
+            "other_name": "Prevote",
+            "web_url": "http://sic.teliway.com/appli/vsic/tracking/suivi.php?code=sic&clef=",
+            "required_fields": [
+                "tracking_account_number",
+                "tracking_key"
+            ]
+        },
+        {
             "slug": "singapore-post",
             "name": "Singapore Post",
             "phone": "+65 6841 2000",
@@ -1575,7 +1605,7 @@ function get_couriers() {
         {
             "slug": "taqbin-sg",
             "name": "TAQBIN Singapore",
-            "phone": "+65 6595 4640",
+            "phone": "+65 1800 225 5888",
             "other_name": "Yamato Singapore",
             "web_url": "http://sg.ta-q-bin.com/",
             "required_fields": []
