@@ -3,8 +3,8 @@ Contributors: aftership
 Donate link: https://www.aftership.com/
 Tags: shipping, tracking, ups, usps, fedex, dhl, tnt, dpd, post, shipment, woocommerce, tracking number, aftership, package tracking, fulfilment, tracking link, carrier, courier, woo commerce, woocommerce shipment tracking, shipping details plugin, widget, shipstation, track, package
 Requires at least: 2.9
-Tested up to: 4.0
-Stable tag: 1.3.1
+Tested up to: 4.1
+Stable tag: 1.3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,6 +95,26 @@ You'll find the FAQ on [AfterShip.com](https://aftership.uservoice.com/knowledge
 
 == Changelog ==
 
+= 1.3.7 =
+* Add new courier
+
+= 1.3.6 =
+* Fix the display problem of required fields in order history page
+
+= 1.3.5 =
+* Fix carrier list data, to support new dropdown menu in Wordpress 4.1
+
+= 1.3.4 =
+* Fix the custom track message tailing space problem
+
+= 1.3.3 =
+* Add the fields config
+
+= 1.3.2 =
+* Support new couriers, please check out supported couriers in https://www.aftership.com/courier
+* Support new required field, `tracking key` and `tracking destination country`
+* Support custom track message on order history page
+
 = 1.3.1 =
 * Support 231 couriers, please check out supported couriers in https://www.aftership.com/courier
 
@@ -118,7 +138,6 @@ You'll find the FAQ on [AfterShip.com](https://aftership.uservoice.com/knowledge
 * No longer require to input AfterShip API key at Wordpress
 * Allow carrier selection at Wordpress
 * Support PHP 5.2.4 or greater
-
 
 = 1.2.4 =
 * Fix enable track button issues
